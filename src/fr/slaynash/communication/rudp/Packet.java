@@ -3,15 +3,19 @@ package fr.slaynash.communication.rudp;
 import fr.slaynash.communication.RUDPConstants;
 import fr.slaynash.communication.utils.NetUtils;
 
+import java.util.Arrays;
+
 /**
  * Simple packet definition to be extended by other packet types
  * @author iGoodie
  */
 public abstract class Packet {
-
 	public static final int HEADER_SIZE = 3; //bytes
-	
-	public static class PacketHeader {		
+
+	private PacketHeader header = new PacketHeader();
+	private byte[] rawPayload;
+
+	public static class PacketHeader {
 		private boolean isReliable = false;
 		private short sequenceNum;
 
@@ -24,19 +28,14 @@ public abstract class Packet {
 		}
 
 		@Override
-		public String toString() {
-			StringBuilder sb = new StringBuilder();
-			sb.append("Reliable:" + isReliable + ", ");
-			sb.append("SequenceNo:" + sequenceNum);
-			return sb.toString();
+		public String toString(){
+			return "PacketHeader{" +
+			"isReliable=" + isReliable +
+			", sequenceNum=" + sequenceNum +
+			'}';
 		}
 	}
 
-	/* Fields*/
-	private PacketHeader header = new PacketHeader();
-	private byte[] rawPayload;
-
-	/* Constructor */
 	public Packet(byte[] data) {
 		//Parse header
 		header.isReliable = RUDPConstants.isPacketReliable(data[0]);
@@ -47,7 +46,6 @@ public abstract class Packet {
 		System.arraycopy(data, HEADER_SIZE, rawPayload, 0, rawPayload.length);
 	}
 
-	/* Getter and Setters */
 	public PacketHeader getHeader() {
 		return header;
 	}
@@ -55,16 +53,12 @@ public abstract class Packet {
 	public byte[] getRawPayload() {
 		return rawPayload;
 	}
-	
-	/* Overrides */
+
 	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("h{");
-		sb.append(header);
-		sb.append("} p{");
-		sb.append(NetUtils.asHexString(rawPayload));
-		sb.append("}");
-		return sb.toString();
+	public String toString(){
+		return "Packet{" +
+		"header=" + header +
+		", rawPayload=[" + rawPayload.length + " bytes]" +
+		'}';
 	}
 }

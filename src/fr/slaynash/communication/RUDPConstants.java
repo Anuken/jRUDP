@@ -25,18 +25,18 @@ public final class RUDPConstants {
 	public static final long PING_INTERVAL = 1000;
 	
 	public static class PacketType {
-		public static final byte UNRELIABLE				= createPacketType((byte)0 , false);
-		public static final byte RELIABLE				= createPacketType((byte)1 , true );
-		public static final byte HANDSHAKE_START		= createPacketType((byte)2 , false);
-		public static final byte HANDSHAKE_OK			= createPacketType((byte)3 , false);
-		public static final byte HANDSHAKE_ERROR		= createPacketType((byte)4 , false);
-		public static final byte PING_REQUEST			= createPacketType((byte)5 , false);
-		public static final byte PING_RESPONSE			= createPacketType((byte)6 , false);
-		public static final byte DISCONNECT_FROMCLIENT	= createPacketType((byte)7 , false);
-		public static final byte DISCONNECT_FROMSERVER	= createPacketType((byte)8 , true );
-		public static final byte RELY					= createPacketType((byte)9 , false);
-		public static final byte PACKETSSTATS_REQUEST	= createPacketType((byte)10, false);
-		public static final byte PACKETSSTATS_RESPONSE	= createPacketType((byte)11, false);
+		public static final byte UNRELIABLE = createPacketType((byte) 0, false);
+		public static final byte RELIABLE = createPacketType((byte) 1, true);
+		public static final byte HANDSHAKE_START = createPacketType((byte) 2, false);
+		public static final byte HANDSHAKE_OK = createPacketType((byte) 3, false);
+		public static final byte HANDSHAKE_ERROR = createPacketType((byte) 4, false);
+		public static final byte PING_REQUEST = createPacketType((byte) 5, false);
+		public static final byte PING_RESPONSE = createPacketType((byte) 6, false);
+		public static final byte DISCONNECT_FROM_CLIENT = createPacketType((byte) 7, false);
+		public static final byte DISCONNECT_FROM_SERVER = createPacketType((byte) 8, true);
+		public static final byte RELY = createPacketType((byte) 9, false);
+		public static final byte PACKETSSTATS_REQUEST = createPacketType((byte) 10, false);
+		public static final byte PACKETSSTATS_RESPONSE = createPacketType((byte) 11, false);
 	}
 	
 	private static byte createPacketType(byte id, boolean reliable) {

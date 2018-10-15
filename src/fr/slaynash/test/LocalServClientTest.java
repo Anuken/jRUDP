@@ -8,8 +8,6 @@ import fr.slaynash.communication.rudp.RUDPServer;
 import fr.slaynash.communication.utils.NetUtils;
 
 public class LocalServClientTest {
-	private static RUDPServer server;
-	private static RUDPClient client;
 	
 	public static class ServerPHandler extends PacketHandlerAdapter {
 
@@ -35,12 +33,13 @@ public class LocalServClientTest {
 	}
 	
 	public static void main(String[] args) throws Exception {
-		server = new RUDPServer(1111);
-		server.setPacketHandler(ServerPHandler.class);
+
+		RUDPServer server = new RUDPServer(1111);
+		server.setPacketHandler(new ServerPHandler());
 		server.start();
-		
-		client = new RUDPClient(NetUtils.getInternetAdress("localhost"), 1111);
-		client.setPacketHandler(ClientPHandler.class);
+
+		RUDPClient client = new RUDPClient(NetUtils.getInternetAdress("localhost"), 1111);
+		client.setPacketHandler(new ClientPHandler());
 		client.connect();
 		
 		server.getConnectedClients().get(0).sendPacket(new byte[]{0});

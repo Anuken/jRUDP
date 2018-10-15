@@ -192,7 +192,7 @@ public class RouterClientTest extends JFrame {
 				int port = Integer.parseInt(tfServerPort.getText());
 
 				clientInstance = new RUDPClient(host, port);
-				clientInstance.setPacketHandler(ClientPacketHandler.class);
+				clientInstance.setPacketHandler(new ClientPacketHandler());
 				clientInstance.connect();
 
 			}

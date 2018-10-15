@@ -1,7 +1,6 @@
 package fr.slaynash.communication.rudp;
 
 import java.io.IOException;
-import java.lang.reflect.Modifier;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -12,6 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import fr.slaynash.communication.RUDPConstants;
+import fr.slaynash.communication.RUDPConstants.PacketType;
 import fr.slaynash.communication.enums.ConnectionState;
 import fr.slaynash.communication.handlers.PacketHandler;
 import fr.slaynash.communication.utils.NetUtils;
@@ -32,11 +32,9 @@ public class RUDPServer {// receive buffer is bigger (4096B) and client packet i
 	
 	private boolean running = false;
 	private boolean stopping = false;
-	private List<RUDPClient> clients = new ArrayList<RUDPClient>();
-	
-	private Class<? extends PacketHandler> clientManager;
-	
-	/* Constructor */
+	private PacketHandler handler;
+	private List<RUDPClient> clients = new ArrayList<>();
+
 	public RUDPServer(int port) throws SocketException{
 		this.port = port;
 		datagramSocket = new DatagramSocket(port);
@@ -45,8 +43,7 @@ public class RUDPServer {// receive buffer is bigger (4096B) and client packet i
 		
 		initClientDropHandler();
 	}
-	
-	/* Getter And Setters */
+
 	public int getPort(){
 		return port;
 	}
@@ -57,7 +54,7 @@ public class RUDPServer {// receive buffer is bigger (4096B) and client packet i
 
 	public List<RUDPClient> getConnectedClients(){
 		synchronized (clients) {
-			return new ArrayList<RUDPClient>(clients);
+			return new ArrayList<>(clients);
 		}
 	}
 	
@@ -74,15 +71,10 @@ public class RUDPServer {// receive buffer is bigger (4096B) and client packet i
 		return null;
 	}
 	
-	public void setPacketHandler(Class<? extends PacketHandler> clientManager){
-		if(Modifier.isAbstract(clientManager.getModifiers())) { //Class should not be abstract!
-			throw new IllegalArgumentException("Given handler class cannot be an abstract class!");
-		}
-		
-		this.clientManager = clientManager;
+	public void setPacketHandler(PacketHandler handler){
+		this.handler = handler;
 	}
-	
-	/* Actions */
+
 	public void start(){
 		if(running) return;
 		running = true;
@@ -130,7 +122,7 @@ public class RUDPServer {// receive buffer is bigger (4096B) and client packet i
 			}
 			
 			byte[] reasonB = reason.getBytes(StandardCharsets.UTF_8);
-			clientToRemove.sendPacket(RUDPConstants.PacketType.DISCONNECT_FROMSERVER, reasonB);
+			clientToRemove.sendPacket(PacketType.DISCONNECT_FROM_SERVER, reasonB);
 			clientToRemove.state = ConnectionState.STATE_DISCONNECTED;
 			
 			clients.remove(clientToRemove);
@@ -146,21 +138,21 @@ public class RUDPServer {// receive buffer is bigger (4096B) and client packet i
 		}
 		
 		//check if packet is an handshake packet
-		if(data[0] == RUDPConstants.PacketType.HANDSHAKE_START){
+		if(data[0] == PacketType.HANDSHAKE_START){
 			//If client is valid, add it to the list and initialize it
 			
 			if(stopping) {
 				byte[] error = "Server closing".getBytes(StandardCharsets.UTF_8);
 				byte[] reponse = new byte[error.length+1];
-				reponse[0] = RUDPConstants.PacketType.HANDSHAKE_ERROR;
+				reponse[0] = PacketType.HANDSHAKE_ERROR;
 				System.arraycopy(error, 0, reponse, 1, error.length);
 				sendPacket(reponse, clientAddress, clientPort);
 			}
 			else if(NetUtils.asInt(data, 1) == RUDPConstants.VERSION_MAJOR && NetUtils.asInt(data, 5) == RUDPConstants.VERSION_MINOR){//version check
 				
-				sendPacket(new byte[]{RUDPConstants.PacketType.HANDSHAKE_OK}, clientAddress, clientPort);
+				sendPacket(new byte[]{PacketType.HANDSHAKE_OK}, clientAddress, clientPort);
 				
-				final RUDPClient rudpclient = new RUDPClient(clientAddress, clientPort, this, clientManager);
+				final RUDPClient rudpclient = new RUDPClient(clientAddress, clientPort, this, handler);
 				synchronized(clients) { 
 					clients.add(rudpclient);
 				}
@@ -175,7 +167,7 @@ public class RUDPServer {// receive buffer is bigger (4096B) and client packet i
 				
 				byte[] error = "Bad version !".getBytes(StandardCharsets.UTF_8);
 				byte[] reponse = new byte[error.length+1];
-				reponse[0] = RUDPConstants.PacketType.HANDSHAKE_ERROR;
+				reponse[0] = PacketType.HANDSHAKE_ERROR;
 				System.arraycopy(error, 0, reponse, 1, error.length);
 				sendPacket(reponse, clientAddress, clientPort);
 				
@@ -187,7 +179,7 @@ public class RUDPServer {// receive buffer is bigger (4096B) and client packet i
 		for(RUDPClient client : clients) {
 			if(Arrays.equals(client.address.getAddress(), clientAddress.getAddress()) && client.port == clientPort){
 				
-				if(data[0] == RUDPConstants.PacketType.DISCONNECT_FROMCLIENT){
+				if(data[0] == PacketType.DISCONNECT_FROM_CLIENT){
 					byte[] reason = new byte[data.length-3];
 					System.arraycopy(data, 3, reason, 0, reason.length);
 					
