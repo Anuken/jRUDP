@@ -1,4 +1,3 @@
-package fr.slaynash.test;
 
 import fr.slaynash.communication.handlers.OrderedPacketHandler;
 import fr.slaynash.communication.handlers.PacketHandlerAdapter;
@@ -6,6 +5,11 @@ import fr.slaynash.communication.rudp.Packet;
 import fr.slaynash.communication.rudp.RUDPClient;
 import fr.slaynash.communication.rudp.RUDPServer;
 import fr.slaynash.communication.utils.NetUtils;
+
+import java.io.IOException;
+import java.net.InetAddress;
+
+import org.junit.jupiter.api.Test;
 
 public class LocalServClientTest {
 	
@@ -31,14 +35,14 @@ public class LocalServClientTest {
 			System.out.println("DC reason: " + reason);
 		}
 	}
-	
-	public static void main(String[] args) throws Exception {
 
+	@Test
+	public void testConnection() throws IOException{
 		RUDPServer server = new RUDPServer(1111);
 		server.setPacketHandler(new ServerPHandler());
 		server.start();
 
-		RUDPClient client = new RUDPClient(NetUtils.getInternetAdress("localhost"), 1111);
+		RUDPClient client = new RUDPClient(InetAddress.getByName("localhost"), 1111);
 		client.setPacketHandler(new ClientPHandler());
 		client.connect();
 		
