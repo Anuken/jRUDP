@@ -1,9 +1,9 @@
-package fr.slaynash.communication.rudp;
+package io.anuke.rudp.rudp;
 
-import fr.slaynash.communication.RUDPConstants;
-import fr.slaynash.communication.RUDPConstants.PacketType;
-import fr.slaynash.communication.handlers.PacketHandler;
-import fr.slaynash.communication.utils.NetUtils;
+import io.anuke.rudp.RUDPConstants;
+import io.anuke.rudp.RUDPConstants.PacketType;
+import io.anuke.rudp.handlers.PacketHandler;
+import io.anuke.rudp.utils.NetUtils;
 
 import java.io.IOException;
 import java.net.DatagramPacket;

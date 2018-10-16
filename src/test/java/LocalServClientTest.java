@@ -1,9 +1,9 @@
 
-import fr.slaynash.communication.handlers.OrderedPacketHandler;
-import fr.slaynash.communication.handlers.PacketHandler;
-import fr.slaynash.communication.rudp.RUDPClient;
-import fr.slaynash.communication.rudp.RUDPServer;
-import fr.slaynash.communication.utils.NetUtils;
+import io.anuke.rudp.handlers.OrderedPacketHandler;
+import io.anuke.rudp.handlers.PacketHandler;
+import io.anuke.rudp.rudp.RUDPClient;
+import io.anuke.rudp.rudp.RUDPServer;
+import io.anuke.rudp.utils.NetUtils;
 
 import java.io.IOException;
 import java.net.InetAddress;

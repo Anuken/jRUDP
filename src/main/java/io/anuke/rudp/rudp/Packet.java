@@ -1,7 +1,7 @@
-package fr.slaynash.communication.rudp;
+package io.anuke.rudp.rudp;
 
-import fr.slaynash.communication.RUDPConstants;
-import fr.slaynash.communication.utils.NetUtils;
+import io.anuke.rudp.RUDPConstants;
+import io.anuke.rudp.utils.NetUtils;
 
 public final class Packet{
     public static final int HEADER_SIZE = 3; //bytes

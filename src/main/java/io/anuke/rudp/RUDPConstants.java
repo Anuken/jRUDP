@@ -1,4 +1,4 @@
-package fr.slaynash.communication;
+package io.anuke.rudp;
 
 public final class RUDPConstants{
     public static final int RECEIVE_MAX_SIZE = 4096;

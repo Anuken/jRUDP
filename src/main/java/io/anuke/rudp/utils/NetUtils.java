@@ -1,4 +1,4 @@
-package fr.slaynash.communication.utils;
+package io.anuke.rudp.utils;
 
 /**
  * Fast values to bytes conversion

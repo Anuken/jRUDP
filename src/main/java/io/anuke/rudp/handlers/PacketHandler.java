@@ -1,6 +1,4 @@
-package fr.slaynash.communication.handlers;
-
-import fr.slaynash.communication.rudp.RUDPClient;
+package io.anuke.rudp.handlers;
 
 public interface PacketHandler{
 

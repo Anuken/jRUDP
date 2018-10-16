@@ -1,6 +1,6 @@
-package fr.slaynash.communication.utils;
+package io.anuke.rudp.utils;
 
-import fr.slaynash.communication.rudp.Packet;
+import io.anuke.rudp.rudp.Packet;
 
 import java.util.Iterator;
 import java.util.PriorityQueue;

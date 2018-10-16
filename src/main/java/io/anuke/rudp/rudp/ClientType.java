@@ -1,4 +1,4 @@
-package fr.slaynash.communication.rudp;
+package io.anuke.rudp.rudp;
 
 public enum ClientType{
     NORMAL_CLIENT,

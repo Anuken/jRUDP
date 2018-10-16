@@ -1,8 +1,8 @@
-package fr.slaynash.communication.handlers;
+package io.anuke.rudp.handlers;
 
-import fr.slaynash.communication.rudp.Packet;
-import fr.slaynash.communication.utils.NetUtils;
-import fr.slaynash.communication.utils.PacketQueue;
+import io.anuke.rudp.rudp.Packet;
+import io.anuke.rudp.utils.NetUtils;
+import io.anuke.rudp.utils.PacketQueue;
 
 public abstract class OrderedPacketHandler implements PacketHandler{
 
