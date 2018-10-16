@@ -34,6 +34,7 @@ public class RUDPClient{ //TODO remove use of ByteBuffers and use functions inst
     private Thread pingThread;
     private LinkedHashMap<Short, Long> packetsReceived = new LinkedHashMap<>();
     private final List<ReliablePacket> packetsSent = Collections.synchronizedList(new ArrayList<>());
+    private int id;
     private int latency = 400;
     private RUDPClient instance = this;
 
@@ -54,6 +55,14 @@ public class RUDPClient{ //TODO remove use of ByteBuffers and use functions inst
         lastPacketReceiveTime = System.currentTimeMillis();
 
         state = ConnectionState.STATE_CONNECTING;
+    }
+
+    public int getID(){
+        return id;
+    }
+
+    public void setID(int id){
+        this.id = id;
     }
 
     /* Getter & Setters */

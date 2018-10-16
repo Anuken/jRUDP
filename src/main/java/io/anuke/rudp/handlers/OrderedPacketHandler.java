@@ -1,6 +1,6 @@
 package io.anuke.rudp.handlers;
 
-import io.anuke.rudp.rudp.Packet;
+import io.anuke.rudp.rudp.RudpPacket;
 import io.anuke.rudp.utils.NetUtils;
 import io.anuke.rudp.utils.PacketQueue;
 
@@ -27,7 +27,7 @@ public abstract class OrderedPacketHandler implements PacketHandler{
 
     @Override
     public void onPacketReceived(byte[] data, boolean local){
-        Packet packet = new Packet(data); //Parse received packet
+        RudpPacket packet = new RudpPacket(data); //Parse received packet
         short expectedSeq = NetUtils.shortIncrement(lastHandledSeq); //last + 1
 
         if(NetUtils.sequenceGreaterThan(lastHandledSeq, packet.sequenceNum)){ // (last > received) == (received < last)

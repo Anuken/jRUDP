@@ -1,6 +1,6 @@
 package io.anuke.rudp.utils;
 
-import io.anuke.rudp.rudp.Packet;
+import io.anuke.rudp.rudp.RudpPacket;
 
 import java.util.Iterator;
 import java.util.PriorityQueue;
@@ -11,21 +11,21 @@ import java.util.PriorityQueue;
  * @author iGoodie
  */
 public class PacketQueue{
-    private PriorityQueue<Packet> packetQueue;
+    private PriorityQueue<RudpPacket> packetQueue;
 
     public PacketQueue(){
         packetQueue = new PriorityQueue<>((a, b) -> Integer.compare(a.sequenceNum, b.sequenceNum));
     }
 
-    public void enqueue(Packet packet){
+    public void enqueue(RudpPacket packet){
         packetQueue.add(packet);
     }
 
-    public Packet dequeue(){
+    public RudpPacket dequeue(){
         return packetQueue.isEmpty() ? null : packetQueue.remove();
     }
 
-    public Packet peek(){
+    public RudpPacket peek(){
         return packetQueue.peek();
     }
 
@@ -37,7 +37,7 @@ public class PacketQueue{
         return packetQueue.isEmpty();
     }
 
-    public Iterator<Packet> iterator(){
+    public Iterator<RudpPacket> iterator(){
         return packetQueue.iterator();
     }
 }

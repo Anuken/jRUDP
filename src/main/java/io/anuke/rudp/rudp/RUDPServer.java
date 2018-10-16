@@ -14,6 +14,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class RUDPServer{// receive buffer is bigger (4096B) and client packet is dynamic (<4096B (reliable) / ~21B or ~45B (avoidable))
     //Packet format:
@@ -33,6 +34,8 @@ public class RUDPServer{// receive buffer is bigger (4096B) and client packet is
     private boolean stopping = false;
     private PacketHandler handler;
     private final List<RUDPClient> clients = new ArrayList<>();
+    private final ConcurrentHashMap<Integer, RUDPClient> clientMap = new ConcurrentHashMap<>();
+    private int lastClientID;
 
     public RUDPServer(int port) throws SocketException{
         this.port = port;
@@ -49,6 +52,10 @@ public class RUDPServer{// receive buffer is bigger (4096B) and client packet is
 
     public boolean isRunning(){
         return running;
+    }
+
+    public RUDPClient getClient(int id){
+        return clientMap.get(id);
     }
 
     public List<RUDPClient> getConnectedClients(){
@@ -140,8 +147,10 @@ public class RUDPServer{// receive buffer is bigger (4096B) and client packet is
                 sendPacket(new byte[]{PacketType.HANDSHAKE_OK}, clientAddress, clientPort);
 
                 final RUDPClient rudpclient = new RUDPClient(clientAddress, clientPort, this, handler);
+                rudpclient.setID(lastClientID++);
                 synchronized(clients){
                     clients.add(rudpclient);
+                    clientMap.put(rudpclient.getID(), rudpclient);
                 }
                 System.out.println("[RUDPServer] Added new client !");
                 System.out.println("[RUDPServer] Initializing client...");
@@ -180,9 +189,7 @@ public class RUDPServer{// receive buffer is bigger (4096B) and client packet is
             }
         }
         if(clientToRemove != null){
-            synchronized(clients){
-                clients.remove(clientToRemove);
-            }
+            remove(clientToRemove);
         }
     }
 
@@ -199,6 +206,7 @@ public class RUDPServer{// receive buffer is bigger (4096B) and client packet is
     void remove(RUDPClient client){
         synchronized(clients){
             clients.remove(client);
+            clientMap.remove(client.getID());
         }
     }
 

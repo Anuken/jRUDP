@@ -3,14 +3,14 @@ package io.anuke.rudp.rudp;
 import io.anuke.rudp.RUDPConstants;
 import io.anuke.rudp.utils.NetUtils;
 
-public final class Packet{
+public final class RudpPacket{
     public static final int HEADER_SIZE = 3; //bytes
 
     public final boolean isReliable;
     public final short sequenceNum;
     public final byte[] rawPayload;
 
-    public Packet(byte[] data){
+    public RudpPacket(byte[] data){
         isReliable = RUDPConstants.isPacketReliable(data[0]);
         sequenceNum = NetUtils.asShort(data, 1);
 
