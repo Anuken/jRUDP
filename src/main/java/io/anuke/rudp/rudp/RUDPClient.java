@@ -186,15 +186,9 @@ public class RUDPClient{ //TODO remove use of ByteBuffers and use functions inst
         if(state == ConnectionState.STATE_DISCONNECTED || state == ConnectionState.STATE_DISCONNECTING) return;
         byte[] reponse = reason.getBytes(StandardCharsets.UTF_8);
 
-        if(type == ClientType.SERVER_CHILD){
-            sendReliablePacket(PacketType.DISCONNECT_FROM_SERVER, reponse);
-            state = ConnectionState.STATE_DISCONNECTING;
-        }
-        if(type == ClientType.NORMAL_CLIENT){
-            sendPacket(PacketType.DISCONNECT_FROM_CLIENT, reponse);
-            state = ConnectionState.STATE_DISCONNECTED;
-            socket.close();
-        }
+        state = ConnectionState.STATE_DISCONNECTED;
+        socket.close();
+
         if(packetHandler != null) packetHandler.onDisconnected(reason, true);
     }
 
@@ -240,7 +234,7 @@ public class RUDPClient{ //TODO remove use of ByteBuffers and use functions inst
         initRelyThread();
         reliableThread.start();
         state = ConnectionState.STATE_CONNECTED;
-        packetHandler.onConnection();
+        if(packetHandler != null) packetHandler.onConnection();
     }
 
     private void initReceiveThread(){
@@ -446,7 +440,7 @@ public class RUDPClient{ //TODO remove use of ByteBuffers and use functions inst
             int sentRemoteR = NetUtils.asInt(data, 7);
             int receivedRemote = NetUtils.asInt(data, 11);
             int receivedRemoteR = NetUtils.asInt(data, 15);
-            packetHandler.onRemoteStatsReturned(sentRemote, sentRemoteR, receivedRemote, receivedRemoteR);
+            if(packetHandler != null) packetHandler.onRemoteStatsReturned(sentRemote, sentRemoteR, receivedRemote, receivedRemoteR);
         }else if(packetHandler != null){
             try{
                 packetHandler.onPacketReceived(data, false); //pass raw packet payload

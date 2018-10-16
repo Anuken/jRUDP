@@ -95,21 +95,7 @@ public class RUDPServer{// receive buffer is bigger (4096B) and client packet is
                 client.disconnect("Server shutting down");
             }
         }
-        int remainingClients = 0;
-        System.out.println("Waiting for every client to disconnect...");
-        while(clients.size() != 0){
-            if(clients.size() != remainingClients){
-                remainingClients = clients.size();
-                System.out.println(remainingClients + " client remaining...");
-            }
-            //TODO terrible design, never sleep for arbitrary time amounts in the main thread while waiting to close
-            try{
-                Thread.sleep(100);
-            }catch(InterruptedException e){
-                e.printStackTrace();
-            }
-        }
-        System.out.println("Closing server...");
+        clients.clear();
         running = false;
         datagramSocket.close();
     }
