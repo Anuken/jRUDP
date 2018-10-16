@@ -2,18 +2,21 @@ package fr.slaynash.communication.handlers;
 
 import fr.slaynash.communication.rudp.RUDPClient;
 
-public abstract class PacketHandler{
-    public RUDPClient rudp;
+public interface PacketHandler{
 
-    public abstract void onConnection();
+    /**Called when a client connects.*/
+    default void onConnection(){}
 
-    public abstract void onDisconnectedByLocal(String reason);
+    /**Called when the client disconnects.
+     *
+     * @param reason The string reason. TODO remove
+     * @param local whether the disconnection was caused by a disconnect() locally
+     */
+    default void onDisconnected(String reason, boolean local){}
 
-    public abstract void onDisconnectedByRemote(String reason);
+    /**Called when a packet is recieved. If the packet type is reliable, reliability must be handled by the listener!*/
+    default void onPacketReceived(byte[] data, boolean reliable){}
 
-    public abstract void onPacketReceived(byte[] data);
-
-    public abstract void onReliablePacketReceived(byte[] data);
-
-    public abstract void onRemoteStatsReturned(int sentRemote, int sentRemoteR, int receivedRemote, int receivedRemoteR);
+    /**???*/
+    default void onRemoteStatsReturned(int sentRemote, int sentRemoteR, int receivedRemote, int receivedRemoteR){}
 }

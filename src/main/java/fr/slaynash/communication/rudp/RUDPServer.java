@@ -2,7 +2,6 @@ package fr.slaynash.communication.rudp;
 
 import fr.slaynash.communication.RUDPConstants;
 import fr.slaynash.communication.RUDPConstants.PacketType;
-import fr.slaynash.communication.enums.ConnectionState;
 import fr.slaynash.communication.handlers.PacketHandler;
 import fr.slaynash.communication.utils.NetUtils;
 

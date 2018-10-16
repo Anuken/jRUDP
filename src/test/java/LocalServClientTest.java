@@ -1,7 +1,6 @@
 
 import fr.slaynash.communication.handlers.OrderedPacketHandler;
-import fr.slaynash.communication.handlers.PacketHandlerAdapter;
-import fr.slaynash.communication.rudp.Packet;
+import fr.slaynash.communication.handlers.PacketHandler;
 import fr.slaynash.communication.rudp.RUDPClient;
 import fr.slaynash.communication.rudp.RUDPServer;
 import fr.slaynash.communication.utils.NetUtils;
@@ -13,25 +12,20 @@ import org.junit.jupiter.api.Test;
 
 public class LocalServClientTest {
 	
-	public static class ServerPHandler extends PacketHandlerAdapter {
+	public static class ServerPHandler implements PacketHandler{
 
 	}
 	
 	public static class ClientPHandler extends OrderedPacketHandler {
 
 		@Override
-		public void onPacketReceived(byte[] data) {
+		public void handlePacket(byte[] data) {
 			System.out.println(NetUtils.asHexString(data));
 		}
 		
 		@Override
-		public void onExpectedPacketReceived(Packet packet) {
-			System.out.println(packet);
-		}
-		
-		@Override
-		public void onDisconnectedByRemote(String reason) {
-			super.onDisconnectedByRemote(reason);
+		public void onDisconnected(String reason, boolean local) {
+			super.onDisconnected(reason, local);
 			System.out.println("DC reason: " + reason);
 		}
 	}

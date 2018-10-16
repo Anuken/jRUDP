@@ -1,4 +1,4 @@
-package fr.slaynash.communication.enums;
+package fr.slaynash.communication.rudp;
 
 public enum ConnectionState{
     STATE_DISCONNECTED,

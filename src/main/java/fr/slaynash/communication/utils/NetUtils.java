@@ -66,8 +66,7 @@ public abstract class NetUtils{
         return sb.toString().trim();
     }
 
-    /* Hacky-wack Methods */
-    public static boolean sequence_greater_than(short s1, short s2){
+    public static boolean sequenceGreaterThan(short s1, short s2){
         return ((s1 > s2) && (s1 - s2 <= 32768)) ||
         ((s1 < s2) && (s2 - s1 > 32768));
     }
