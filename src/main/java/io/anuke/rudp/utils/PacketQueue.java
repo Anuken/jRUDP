@@ -14,7 +14,7 @@ public class PacketQueue{
     private PriorityQueue<Packet> packetQueue;
 
     public PacketQueue(){
-        packetQueue = new PriorityQueue<>((a, b) -> Integer.compare(a.getHeader().getSequenceNo(), b.getHeader().getSequenceNo()));
+        packetQueue = new PriorityQueue<>((a, b) -> Integer.compare(a.sequenceNum, b.sequenceNum));
     }
 
     public void enqueue(Packet packet){
